@@ -9,7 +9,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -59,5 +61,15 @@ public class BookController {
     public String deleteBook(@PathVariable("bookId") int id) {
         bookService.deleteBookById(id);
         return "redirect:/book/allBook";
+    }
+
+    @RequestMapping("/queryBook")
+    public  String queryBook(String bookName, Model model){
+        Books books = bookService.queryBookByName(bookName);
+        List<Books>list =new ArrayList<>();
+        list.add(books);
+        //Dao 改模糊查询 优化
+        model.addAttribute("list", list);
+        return "allBook";
     }
 }
